@@ -4,7 +4,7 @@ from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 
 # dataset path
-data_dir = r"D:\drive-download-20260316T210828Z-3-001\dataset\train\spoilage_detection"
+data_dir = r"D:\PD_LAB\dataset\train\spoilage_detection"
 
 # transforms
 transform = transforms.Compose([

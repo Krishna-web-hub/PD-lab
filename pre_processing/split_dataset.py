@@ -2,7 +2,7 @@ import os
 import shutil
 import random
 
-base = r"D:\drive-download-20260316T210828Z-3-001\dataset"
+base = r"D:\PD_LAB\dataset"
 
 splits = ["train", "val", "test"]
 

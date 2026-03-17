@@ -1,7 +1,7 @@
 import os
 import shutil
 
-base = r"D:\drive-download-20260316T210828Z-3-001"
+base = r"D:\PD_LAB"
 source = os.path.join(base, "Images")
 
 for root, dirs, files in os.walk(source):
