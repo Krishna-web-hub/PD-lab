@@ -265,4 +265,18 @@ So far, the project has successfully:
 
 The system is now **ready for model training and experimentation**.
 
----
+# Pre-processing Files
+
+All preprocessing scripts are inside the **pre_processing/** folder.
+
+| File | Purpose |
+|-----|--------|
+| `preprocessing.py` | Reads images, removes corrupted files, and resizes images to **224×224**. Saves them to `processed_images/`. |
+| `organise_dataset.py` | Reorganizes the dataset into task folders such as **ai_detection** and **spoilage_detection**. |
+| `split_dataset.py` | Splits the dataset into **train**, **validation**, and **test** sets. |
+| `tensor_pipeline.py` | Loads images, applies transforms, and converts them to **PyTorch tensors**. |
+| `visualize_batch.py` | Displays a batch of images with labels to verify the dataset. |
+
+These scripts together prepare the dataset before model training.
+- - -
+- - -
