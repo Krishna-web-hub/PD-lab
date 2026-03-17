@@ -7,7 +7,7 @@ transform = transforms.Compose([
 ])
 
 dataset = ImageFolder(
-    r"D:\drive-download-20260316T210828Z-3-001\processed_images",
+    r"D:\PD_LAB\processed_images",
     transform=transform
 )
 
