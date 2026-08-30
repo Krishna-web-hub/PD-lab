@@ -129,9 +129,7 @@ pipeline has not silently scrambled anything.
 
 `pD_final.ipynb` is the notebook that produced the results above. It lives
 outside this repository, alongside it, and resolves its paths relative to the
-repo root. The `Copy_of_build_vision_transformer_model.ipynb` in this repo is a
-separate, earlier notebook working through how a ViT is put together; it is not
-what trained the reported model.
+repo root.
 
 The ViT backbone is **frozen** and only the classification head is trained:
 1,538 parameters out of 86.6 M. With 598 training images, fine-tuning the whole
