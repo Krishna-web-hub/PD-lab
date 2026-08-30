@@ -1,39 +1,67 @@
-import torch
-from torchvision import datasets, transforms
+"""Load one batch and show what the tensor conversion produced.
+
+Changes from the original: the hardcoded `D:\\PD_LAB\\...` path is now
+`--data-dir`, and `--save` writes the figure to a file so the script also runs
+on a machine with no display.
+
+    python tensor_pipeline.py
+    python tensor_pipeline.py --save batch.png
+"""
+
+import argparse
+from pathlib import Path
+
+import matplotlib
 from torch.utils.data import DataLoader
-import matplotlib.pyplot as plt
+from torchvision import datasets, transforms
 
-# dataset path
-data_dir = r"D:\PD_LAB\dataset\train\spoilage_detection"
+REPO = Path(__file__).resolve().parents[1]
 
-# transforms (image preprocessing before tensor conversion)
-transform = transforms.Compose([
-    transforms.Resize((224,224)),
-    transforms.ToTensor()
-])
 
-# dataset loader
-dataset = datasets.ImageFolder(data_dir, transform=transform)
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--data-dir", default=str(REPO / "dataset/train/spoilage_detection"))
+    parser.add_argument("--batch-size", type=int, default=16)
+    parser.add_argument("--save", default=None, help="write the figure here instead of showing it")
+    args = parser.parse_args()
 
-print("Classes:", dataset.classes)
-print("Total images:", len(dataset))
+    data_dir = Path(args.data_dir)
+    if not data_dir.is_dir():
+        print(f"error: no such directory: {data_dir}")
+        return 2
 
-# DataLoader
-loader = DataLoader(
-    dataset,
-    batch_size=16,
-    shuffle=True
-)
+    if args.save:
+        matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
 
-# get one batch
-images, labels = next(iter(loader))
+    transform = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+    ])
+    dataset = datasets.ImageFolder(str(data_dir), transform=transform)
 
-print("Tensor shape:", images.shape)
-print("Labels:", labels)
+    print("Classes:", dataset.classes)
+    print("Total images:", len(dataset))
 
-# visualize first image tensor
-img = images[0].permute(1,2,0)   # convert CHW → HWC for display
+    loader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True)
+    images, labels = next(iter(loader))
 
-plt.imshow(img)
-plt.title("Example tensor image")
-plt.show()
+    print("Tensor shape:", tuple(images.shape))
+    print("Value range :", f"[{images.min():.3f}, {images.max():.3f}]")
+    print("Labels      :", labels.tolist())
+
+    plt.imshow(images[0].permute(1, 2, 0))  # CHW -> HWC for display
+    plt.title(f"Example tensor image: {dataset.classes[labels[0]]}")
+    plt.axis("off")
+
+    if args.save:
+        plt.savefig(args.save, dpi=110, bbox_inches="tight")
+        print(f"\nsaved {args.save}")
+    else:
+        plt.show()
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
